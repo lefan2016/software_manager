@@ -2,13 +2,16 @@ import os
 from os.path import join as pathjoin
 
 from software_manager import config
-from .dependencies import yaml
+from software_manager.libs.dependencies import yaml
 
 
 class Manager:
+
     def __init__(self):
-        self.global_data_file = pathjoin(config.APP_DIR, "config/software_profile.yaml")
-        self.local_data_file = pathjoin(config.get_local_profile_dir(), 'software_profile.yaml')
+        self.global_data_file = pathjoin(config.APP_DIR,
+                                         "config/software_profile.yaml")
+        self.local_data_file = pathjoin(config.get_local_profile_dir(),
+                                        'software_profile.yaml')
         self.global_data = self.get_global_data()
         self.local_data = self.get_local_data()
 

@@ -13,6 +13,7 @@ __all__ = ['SoftwareManager']
 
 
 class _Application(object):
+
     def __init__(self, data):
         self.data = data
         self.project_name = None
@@ -39,10 +40,10 @@ class _Application(object):
 
 
 class SoftwareManager(object):
+
     def __init__(self, project_name):
-        self.settings = HZConfig('softwareManager',
-                                 project_name=project_name,
-                                 ext="app")
+        self.settings = HZConfig(
+            'softwareManager', project_name=project_name, ext="app")
         user_settings_path = self.settings.get_user_settings_path()
         self.local_data_file = htk.pathjoin(user_settings_path,
                                             'software_profile.yaml')

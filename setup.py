@@ -3,9 +3,11 @@ from setuptools import setup
 setup(
     name='software_manager',
     version='0.1.0',
-    packages=['software_manager', 'software_manager.libs',
-              'software_manager.libs.dependencies',
-              'software_manager.libs.dependencies.yaml'],
+    packages=[
+        'software_manager', 'software_manager.libs',
+        'software_manager.libs.dependencies',
+        'software_manager.libs.dependencies.yaml'
+    ],
     url='',
     license='',
     author='hao.long',
@@ -18,5 +20,4 @@ setup(
             'software_manager = software_manager.main',
         ]
     },
-
 )

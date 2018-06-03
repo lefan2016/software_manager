@@ -39,11 +39,13 @@ LOGGING.setLevel(htk.get_logger_level())
 
 
 class SoftwareManagerError(IOError):
+
     def __init__(self, argv):
         LOGGING.error(argv)
 
 
 class SoftwareManagerGUI(QtWidgets.QWidget):
+
     def __init__(self, ui_file):
         super(SoftwareManagerGUI, self).__init__()
         # parent custom widget
@@ -68,41 +70,38 @@ class SoftwareManagerGUI(QtWidgets.QWidget):
 
         # init windows
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint |
-                            QtCore.Qt.Window |
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.Window |
                             QtCore.Qt.WindowStaysOnTopHint |
                             QtCore.Qt.WindowSoftkeysRespondHint)
         self.comboBox_project_list.addItems(self.get_project_list())
 
         self.set_current_project()
 
-        self.icon_combo_box.addItem(self.icon("default_software_icon.png"),
-                                    "Dmyz")
-        self.quit_action = QtWidgets.QAction("exit", self,
-                                             triggered=QtWidgets.QApplication.quit)
-        open_log_action = QtWidgets.QAction("Explore Log Folder ",
-                                            self,
-                                            triggered=self.go_to_log_folder)
+        self.icon_combo_box.addItem(
+            self.icon("default_software_icon.png"), "Dmyz")
+        self.quit_action = QtWidgets.QAction(
+            "exit", self, triggered=QtWidgets.QApplication.quit)
+        open_log_action = QtWidgets.QAction(
+            "Explore Log Folder ", self, triggered=self.go_to_log_folder)
 
         self.open_local_folder = QtWidgets.QAction(
             "Open Local Settings Folder",
             self,
             triggered=self.explore_local_settings_folder)
-        project_manager_action = QtWidgets.QAction("project manager",
-                                                   self,
-                                                   triggered=self.go_to_log_folder)
+        project_manager_action = QtWidgets.QAction(
+            "project manager", self, triggered=self.go_to_log_folder)
 
         self.tray_icon_menu = QtWidgets.QMenu(self)
         if _image:
             self.background_image = _image.encode("utf-8").replace("\\", "/")
 
-        self.skin_action = QtWidgets.QAction('Skin Store', self,
-                                             triggered=self.show_skin_widget)
+        self.skin_action = QtWidgets.QAction(
+            'Skin Store', self, triggered=self.show_skin_widget)
 
         self.change_css = QtWidgets.QMenu('Change CSS', self.tray_icon_menu)
 
-        default = QtWidgets.QAction("default", self.change_css,
-                                    triggered=self.change_css_default)
+        default = QtWidgets.QAction(
+            "default", self.change_css, triggered=self.change_css_default)
 
         self.change_css.addAction(default)
 
@@ -125,8 +124,7 @@ class SoftwareManagerGUI(QtWidgets.QWidget):
         self.tray_icon_menu.addMenu(self.change_css)
         self.tray_icon_menu.addAction(self.quit_action)
         gif_file = HZResources.get_icon_resources("default_software_icon.gif")
-        self.tray_icon = AnimatedSystemTrayIcon(QtGui.QMovie(gif_file),
-                                                self)
+        self.tray_icon = AnimatedSystemTrayIcon(QtGui.QMovie(gif_file), self)
         self.tray_icon.setContextMenu(self.tray_icon_menu)
         self.icon_combo_box.currentIndexChanged.connect(self.set_icon)
         self.setWindowIcon(self.icon("default_software_icon.png"))
@@ -141,8 +139,9 @@ class SoftwareManagerGUI(QtWidgets.QWidget):
             self.user_button.setIcon(
                 self.create_round_thumbnail(self.user_image))
         else:
-            self.user_button.setIcon(self.create_round_thumbnail(
-                self.icon("default_user_thumb.png", True)))
+            self.user_button.setIcon(
+                self.create_round_thumbnail(
+                    self.icon("default_user_thumb.png", True)))
 
         self.pushButton_bottom_icon.setIcon(self.icon("software_name.png"))
         self.pushButton_top_icon.setIcon(self.icon("hz_label.png"))
@@ -163,8 +162,8 @@ class SoftwareManagerGUI(QtWidgets.QWidget):
 
         self.user_menu.addSeparator()
 
-        user_action = QtWidgets.QAction("change user image", self,
-                                        triggered=self.set_user_image)
+        user_action = QtWidgets.QAction(
+            "change user image", self, triggered=self.set_user_image)
 
         self.user_menu.addAction(user_action)
 
@@ -186,8 +185,7 @@ class SoftwareManagerGUI(QtWidgets.QWidget):
         self.timer.timeout.connect(self.time_task)
         self.timer.start(1000)
         if self.background_image:
-            self.set_background_image_css(
-                self.background_image.decode("utf-8"))
+            self.set_background_image_css(self.background_image.decode("utf-8"))
         else:
             self.set_background_image_css(self.get_skin())
         self.skin_timer = QtCore.QTimer(self)
@@ -217,27 +215,23 @@ class SoftwareManagerGUI(QtWidgets.QWidget):
 
     def get_skins(self):
         all_files = glob.glob("%s/skin/*.png" % HZResources.resources_root)
-        all_files.extend(
-            glob.glob("%s/skin/*.png" % self.local_profile_folder))
+        all_files.extend(glob.glob("%s/skin/*.png" % self.local_profile_folder))
         return all_files
 
     def get_skin(self):
         all_files = glob.glob("%s/skin/*.png" % HZResources.resources_root)
-        all_files.extend(
-            glob.glob("%s/skin/*.png" % self.local_profile_folder))
+        all_files.extend(glob.glob("%s/skin/*.png" % self.local_profile_folder))
         index = random.randrange(0, len(all_files), 1)
         LOGGING.info(
-            "find skin: %s" % all_files[index].replace("\\", '/').decode(
-                "gbk"))
+            "find skin: %s" % all_files[index].replace("\\", '/').decode("gbk"))
         return all_files[index].replace("\\", '/').decode("gbk")
 
     def set_background_image_css(self, image):
         awesome_css.set_background_image(self.mainFrame, image)
 
     def change_background_image(self):
-        image = QtWidgets.QFileDialog.getOpenFileName(self, "Open Image",
-                                                      "/home/jana",
-                                                      "Image Files (*.png)")
+        image = QtWidgets.QFileDialog.getOpenFileName(
+            self, "Open Image", "/home/jana", "Image Files (*.png)")
         if image[0]:
             shutil.copy(image[0], self.background_image)
             self.set_background_image_css(image[0])
@@ -271,8 +265,8 @@ class SoftwareManagerGUI(QtWidgets.QWidget):
             else:
                 layer_widget.set_list([app_.name])
             layer_item = QtWidgets.QListWidgetItem(self.software_commands)
-            layer_item.setSizeHint(QtCore.QSize(layer_widget.width() - 10,
-                                                layer_widget.height()))
+            layer_item.setSizeHint(
+                QtCore.QSize(layer_widget.width() - 10, layer_widget.height()))
             layer_item.path = app_.path
             layer_item.name = app_.name
             layer_item.profiles = profiles
@@ -288,16 +282,15 @@ class SoftwareManagerGUI(QtWidgets.QWidget):
         base_image.fill(QtCore.Qt.transparent)
 
         thumb = QtGui.QPixmap.fromImage(image)
-        thumb.scaled(canvas_size,
-                     canvas_size,
+        thumb.scaled(canvas_size, canvas_size,
                      QtCore.Qt.KeepAspectRatioByExpanding,
                      QtCore.Qt.SmoothTransformation)
         return thumb
 
     def get_profiles(self, app_name, project_name):
         profiles = {}
-        settings = HZConfig("%s/applauncher/profiles/*" % app_name,
-                            project_name=project_name)
+        settings = HZConfig(
+            "%s/applauncher/profiles/*" % app_name, project_name=project_name)
         sub_folders = settings.glob_files()
         for sub_folder in sub_folders:
             if self._is_package(sub_folder):
@@ -314,9 +307,8 @@ class SoftwareManagerGUI(QtWidgets.QWidget):
         return 'profile.yaml' in os.listdir(package_path)
 
     def set_user_image(self):
-        image = QtWidgets.QFileDialog.getOpenFileName(self, "Open Image",
-                                                      "/home/jana",
-                                                      "Image Files (*.png)")
+        image = QtWidgets.QFileDialog.getOpenFileName(
+            self, "Open Image", "/home/jana", "Image Files (*.png)")
         if image[0]:
             shutil.copy(image[0], self.user_image)
             self.user_button.setIcon(
@@ -362,8 +354,10 @@ class SoftwareManagerGUI(QtWidgets.QWidget):
     @staticmethod
     def get_project_list():
         root = htk.pathjoin(env.APP_CONFIG.string, 'settings', 'projects')
-        return [x for x in os.listdir(root) if
-                os.path.isdir(htk.pathjoin(root, x)) and not x.startswith('.')]
+        return [
+            x for x in os.listdir(root)
+            if os.path.isdir(htk.pathjoin(root, x)) and not x.startswith('.')
+        ]
 
     def get_app_version(self, app_):
         project_name = self.comboBox_project_list.currentText()
@@ -427,9 +421,12 @@ class SoftwareManagerGUI(QtWidgets.QWidget):
                     'path': software_path,
                     'icon': 'default_software_icon.png',
                     'description': software_name,
-                    'order': self.software_commands.count()}
-                self.manager.data.update(
-                    {software_name.replace(" ", ""): temp_data})
+                    'order': self.software_commands.count()
+                }
+                self.manager.data.update({
+                    software_name.replace(" ", ""):
+                    temp_data
+                })
                 app_ = self.manager.build_app(temp_data)
                 image = QtGui.QIcon(software_icon)
                 layer_widget = SoftwareManagerItemGUI(app_, self)
@@ -437,10 +434,11 @@ class SoftwareManagerGUI(QtWidgets.QWidget):
                 layer_widget.set_list([app_.name])
                 layer_item = QtWidgets.QListWidgetItem(self.software_commands)
                 layer_item.setToolTip(u'%s' % app_.name)
-                layer_item.setSizeHint(QtCore.QSize(layer_widget.width() - 10,
-                                                    layer_widget.height()))
-                layer_item.setTextAlignment(
-                    QtCore.Qt.AlignVCenter | QtCore.Qt.AlignLeft)
+                layer_item.setSizeHint(
+                    QtCore.QSize(layer_widget.width() - 10,
+                                 layer_widget.height()))
+                layer_item.setTextAlignment(QtCore.Qt.AlignVCenter |
+                                            QtCore.Qt.AlignLeft)
                 self.software_commands.setItemWidget(layer_item, layer_widget)
                 LOGGING.info(self.manager.data)
                 self.save_profile()
@@ -459,10 +457,10 @@ class SoftwareManagerGUI(QtWidgets.QWidget):
                 exe_path = os.path.expandvars(exe_path)
             if not os.path.exists(exe_path):
                 LOGGING.error(traceback.format_exc())
-                MessageDisplay(NAME,
-                               'Not Find \n%s \nin "software_profile.yaml"'
-                               % exe_path,
-                               MessageDisplay.CRITICALa)
+                MessageDisplay(
+                    NAME,
+                    'Not Find \n%s \nin "software_profile.yaml"' % exe_path,
+                    MessageDisplay.CRITICALa)
             elif item.name.lower() in self.app_launchers:
                 widget = self.software_commands.itemWidget(item)
                 profile_name = widget.comboBox.currentText()
@@ -470,9 +468,8 @@ class SoftwareManagerGUI(QtWidgets.QWidget):
                     profile_path = item.profiles[profile_name]
                     LOGGING.info('load current profile: %s' % profile_path)
                     if os.path.isdir(profile_path):
-                        command = '{0} -lp {1} {2}'.format(exe_path,
-                                                           profile_path,
-                                                           self.drag_file)
+                        command = '{0} -lp {1} {2}'.format(
+                            exe_path, profile_path, self.drag_file)
                         LOGGING.info('run launcher: %s' % command)
                         htk.start(command)
                 except:
@@ -559,9 +556,9 @@ class SoftwareManagerGUI(QtWidgets.QWidget):
             exe_path = os.path.expandvars(exe_path)
         if not os.path.exists(exe_path):
             LOGGING.error(traceback.format_exc())
-            MessageDisplay(NAME,
-                           'Not Find \n%s \nin "software_profile.yaml"' % exe_path,
-                           MessageDisplay.CRITICAL)
+            MessageDisplay(
+                NAME, 'Not Find \n%s \nin "software_profile.yaml"' % exe_path,
+                MessageDisplay.CRITICAL)
 
         elif item.name.lower() in self.app_launchers:
             widget = self.software_commands.itemWidget(item)
@@ -653,8 +650,9 @@ class SoftwareManagerGUI(QtWidgets.QWidget):
                 else:
                     layer_widget.set_list([app_.name])
                 layer_item = QtWidgets.QListWidgetItem(self.software_commands)
-                layer_item.setSizeHint(QtCore.QSize(layer_widget.width() - 10,
-                                                    layer_widget.height()))
+                layer_item.setSizeHint(
+                    QtCore.QSize(layer_widget.width() - 10,
+                                 layer_widget.height()))
                 layer_item.path = app_.path
                 layer_item.name = app_.name
                 layer_item.profiles = profiles
@@ -667,12 +665,9 @@ class SoftwareManagerGUI(QtWidgets.QWidget):
         icon = QtWidgets.QSystemTrayIcon.MessageIcon()
         if text == "17:20:01":
             update_info = QtWidgets.QApplication.translate(
-                "ship_console",
-                "请大家记得填timeLog",
-                None,
+                "ship_console", "请大家记得填timeLog", None,
                 QtWidgets.QApplication.UnicodeUTF8)
-            self.tray_icon.showMessage(NAME, update_info, icon,
-                                       200000)
+            self.tray_icon.showMessage(NAME, update_info, icon, 200000)
 
     def show_message_for_file(self, msg_file):
         icon = QtWidgets.QSystemTrayIcon.MessageIcon()
@@ -680,22 +675,15 @@ class SoftwareManagerGUI(QtWidgets.QWidget):
             with open(msg_file, 'r') as f:
                 str_ = f.readlines()
                 update_info = QtWidgets.QApplication.translate(
-                    "ship_console",
-                    "\n".join(str_),
-                    None,
+                    "ship_console", "\n".join(str_), None,
                     QtWidgets.QApplication.UnicodeUTF8)
-            self.tray_icon.showMessage(NAME, update_info, icon,
-                                       200000)
+            self.tray_icon.showMessage(NAME, update_info, icon, 200000)
 
     def show_message(self, msg):
         icon = QtWidgets.QSystemTrayIcon.MessageIcon()
         update_info = QtWidgets.QApplication.translate(
-            "ship_console",
-            msg,
-            None,
-            QtWidgets.QApplication.UnicodeUTF8)
-        self.tray_icon.showMessage(NAME, update_info, icon,
-                                   200000)
+            "ship_console", msg, None, QtWidgets.QApplication.UnicodeUTF8)
+        self.tray_icon.showMessage(NAME, update_info, icon, 200000)
 
     @staticmethod
     def check_update_info():

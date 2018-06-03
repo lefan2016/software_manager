@@ -17,6 +17,7 @@ SKIN_HEIGHT = 640 / SKIN_INDEX
 
 
 class CustomListWidget(QtWidgets.QListWidget):
+
     def __init__(self, parent):
         super(CustomListWidget, self).__init__()
         RenderAwesomeUI(parent_widget=self)
@@ -50,8 +51,7 @@ class CustomListWidget(QtWidgets.QListWidget):
         item = self.currentItem()
         if item:
             skin_path = item.path.replace("\\", '/')
-            om.write(self.software_gui.local_profile_folder,
-                     'skin', skin_path)
+            om.write(self.software_gui.local_profile_folder, 'skin', skin_path)
             self.software_gui.set_background_image_css(skin_path)
 
     def get_skins(self):
@@ -65,6 +65,7 @@ class CustomListWidget(QtWidgets.QListWidget):
 
 
 class ThumbWidgetItem(QtWidgets.QListWidgetItem):
+
     def __init__(self, skin_path):
         RenderAwesomeUI(parent_widget=self)
         self.skin_path = skin_path.replace("\\", '/').decode("gbk")
@@ -93,6 +94,7 @@ class ThumbWidgetItem(QtWidgets.QListWidgetItem):
 
 
 class SoftwareManagerSkinUI(QtWidgets.QDialog):
+
     def __init__(self, parent=None):
         super(SoftwareManagerSkinUI, self).__init__()
         self.parent = parent

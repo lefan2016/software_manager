@@ -2,16 +2,17 @@
 import time
 from os.path import join as pathjoin
 
-from PySide import QtGui, QtCore
+from PySide import QtCore, QtGui
 
 from software_manager import config
 
 
 class SplashScreen(QtGui.QSplashScreen):
+
     def __init__(self):
-        super(SplashScreen, self).__init__(QtGui.QPixmap(pathjoin(
-            config.RESOURCES, "tray_icon.png")),
-                                           QtCore.Qt.WindowStaysOnTopHint)
+        super(SplashScreen, self).__init__(
+            QtGui.QPixmap(pathjoin(config.RESOURCES, "tray_icon.png")),
+            QtCore.Qt.WindowStaysOnTopHint)
 
     def effect(self):
         self.setWindowOpacity(0)
@@ -37,5 +38,8 @@ class SplashScreen(QtGui.QSplashScreen):
             t += 1
             time.sleep(0.04)
 
-    def showMessage(self, message, alignment=QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, color=QtCore.Qt.green):
+    def showMessage(self,
+                    message,
+                    alignment=QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom,
+                    color=QtCore.Qt.green):
         return super(SplashScreen, self).showMessage(message, alignment, color)

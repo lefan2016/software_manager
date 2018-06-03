@@ -7,7 +7,8 @@ from PySide import QtGui
 
 def load_ui_type(ui_file):
     """
-    Pyside lacks the "load_ui_type" command, so we have to convert the ui file to py code in-memory first
+    Pyside lacks the "load_ui_type" command, so we have to convert the ui file
+    to py code in-memory first
     and then execute it in a special frame to retrieve the form_class.
     """
     parsed = xml.parse(ui_file)
@@ -22,7 +23,8 @@ def load_ui_type(ui_file):
         pyc = compile(o.getvalue(), '<string>', 'exec')
         exec pyc in frame
 
-        # Fetch the base_class and form class based on their type in the xml from designer
+        # Fetch the base_class and form class based on their
+        #  type in the xml from designer
         form_class = frame['Ui_%s' % form_class]
         base_class = getattr(QtGui, widget_class)
 

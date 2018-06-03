@@ -11,6 +11,7 @@ from hz.resources import HZResources
 
 
 class SoftwareManagerItemGUI(QtWidgets.QWidget):
+
     def __init__(self, app, parent):
         name = "software_manager_item"
         super(SoftwareManagerItemGUI, self).__init__()
